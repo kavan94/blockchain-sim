@@ -1,0 +1,17 @@
+{
+  "name": "blockchain-simulator",
+  "version": "1.0.0",
+  "description": "A vastly oversimplified blockchain simulator, based loosely off the Ethereum protocol",
+  "main": "index.js",
+  "scripts": {
+    "sim": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kavan Eghbalnia",
+  "license": "ISC",
+  "dependencies": {
+    "object-hash": "^1.3.1",
+    "rsvp": "^4.8.4",
+    "terminal-kit": "^1.26.8"
+  }
+}

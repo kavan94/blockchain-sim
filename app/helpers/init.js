@@ -3,9 +3,9 @@
 const account = require('../models/account')
 
 exports.createAccounts = async () => {
-	for (var i = 0; i < global.NUM_ACCOUNTS; i++) {
+	for (var i = 0; i < NUM_ACCOUNTS; i++) {
 		let newAccount = new account.Account(`Account ${i}`);
 		await newAccount.initialize();
-		global.accountMap[newAccount.publicKey] = newAccount;
+		global.ACCOUNT_MAP[newAccount.publicKey] = newAccount;
 	}
 }

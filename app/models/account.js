@@ -10,18 +10,10 @@ exports.Account = class Account {
 		this.displayName = displayName;
 
 		this.nonce = 0;
-		this.etherBalance = 0;
+		this.balance = 0;
 		this.contractFn = null;
 		this.storage = {};
-	}
-
-	getPublicData() {
-		// for other accounts to get this account's public data
-		return {
-			etherBalance: this.etherBalance,
-			nonce: this.nonce,
-			publicKey: this.publicKey
-		}
+		this.connectedNodeId = Object.keys(NODE_MAP)[Math.floor(Math.random() * NUM_NODES)];
 	}
 
 	initialize() {
@@ -44,14 +36,17 @@ exports.Account = class Account {
 					this.publicKey = publicKey;
 
 					// instead of assigning the private key to "this", the signTransaction function
-					// will keep closure over the scope here and the Account instance can call signTransaction
-					// with it's own private key
+					// will keep closure over the scope here and the Account instance can call signTransaction itself
+
 					this.signTransaction = (transaction) => {
 						let sign = crypto.createSign('SHA256');
 						sign.write(objectHash(transaction));
 						sign.end();
 
-						return sign.sign(privateKey, 'hex')
+						return {
+							transaction,
+							signature: sign.sign(privateKey, 'hex')
+						}
 					}
 
 					this.verifyTransaction = (transaction, signature) => {
@@ -59,11 +54,24 @@ exports.Account = class Account {
 						verify.write(objectHash(transaction));
 						verify.end();
 
-						return verify.verify(transaction.sender.publicKey, signature, 'hex');
+						return verify.verify(transaction.from, signature, 'hex');
 					}
 					return resolve();
 				}
 			)
 		})
+	}
+
+	getPublicData() {
+		// for other accounts to get this account's public data
+		return {
+			balance: this.balance,
+			nonce: this.nonce,
+			publicKey: this.publicKey
+		}
+	}
+
+	broadcastTransaction(transaction) {
+		NODE_MAP[this.connectedNodeId].addIncomingTransaction(transaction);
 	}
 }

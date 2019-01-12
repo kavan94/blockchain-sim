@@ -1,9 +1,11 @@
 const crypto = require('crypto');
-const objectHash = require('object-hash')
+const objectHash = require('object-hash');
+const uuid = require('uuid/v4');
 
 exports.Node = class Node {
 	constructor(displayName) {
 		this.displayName = displayName;
+		this.id = uuid();
 		this.chain = {};
 	}
 

@@ -12,6 +12,7 @@
   "dependencies": {
     "object-hash": "^1.3.1",
     "rsvp": "^4.8.4",
-    "terminal-kit": "^1.26.8"
+    "terminal-kit": "^1.26.8",
+    "uuid": "^3.3.2"
   }
 }

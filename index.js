@@ -3,12 +3,17 @@ const InitHelper = require('./app/helpers/init')
 
 global.NUM_ACCOUNTS = 10;
 global.NUM_NODES = 5;
+global.AVG_BLOCK_TIME = null; // time in seconds for a new block to be mined
+global.HASH_RATE = 10; // number of tries each "node" gets per second
+global.TARGET_BINARY_LEADING_ZEROES = 8; // number of leading zeroes required in binary representation
 
 // index accounts by address (in this case, as noted in account.js, just the public key)
 global.ACCOUNT_MAP = {};
 global.NODE_MAP = {};
 
 run = async () => {
+	InitHelper.calculateAvgTimeToMine();
+	console.log("With current settings, a block is expected to take an average of " + AVG_BLOCK_TIME + "sec");
 	console.log('Setting up accounts and nodes...');
 	InitHelper.createNodes();
 	await InitHelper.createAccounts();

@@ -32,3 +32,8 @@ exports.createAndBroadcastGenesisBlock = async () => {
 		node.addBlockToChain(genesisBlock);
 	}
 }
+
+exports.calculateAvgTimeToMine = () => {	
+	// expected # of tries for (n) leading zeros is 2^n, so
+	AVG_BLOCK_TIME = (Math.pow(2, TARGET_BINARY_LEADING_ZEROES)) / (HASH_RATE * NUM_NODES)
+}

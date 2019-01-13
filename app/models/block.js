@@ -18,6 +18,8 @@ exports.Block = class Block {
 		this.parentHash = parentHash;
 		this.reward = 100;
 
+		this.headerHash = objectHash(this.header);
+
 		// simple, short, unique identifier for logging purposes
 		this.displayLogIdentifier = this.number + '-' + this.headerHash.substring(0,5).concat('...');
 	}

@@ -16,7 +16,6 @@ exports.Block = class Block {
 		this.number = number;
 		this.timestamp = timestamp;
 		this.parentHash = parentHash;
-		this.reward = 100;
 
 		this.headerHash = objectHash(this.header);
 

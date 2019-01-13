@@ -19,7 +19,7 @@ exports.Block = class Block {
 		this.reward = 100;
 
 		// simple, short, unique identifier for logging purposes
-		this.displayLogIdentifier = this.number + objectHash(this.header).substring(0,5).concat('...');
+		this.displayLogIdentifier = this.number + '-' + this.headerHash.substring(0,5).concat('...');
 	}
 
 }

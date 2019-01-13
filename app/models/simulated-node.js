@@ -94,7 +94,7 @@ exports.Node = class Node {
 		const latestBlockNum = Math.max(...Object.keys(this.chain).map((key) => { return parseInt(key)}));
 		return new block.Block(
 			this.txList,
-			null,
+			this.id,
 			latestBlockNum + 1,
 			new Date(),
 			this.currentMiningState.nonce,

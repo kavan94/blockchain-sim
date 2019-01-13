@@ -29,7 +29,7 @@ exports.createAndBroadcastGenesisBlock = async () => {
 	let genesisBlock = new block.Block([], beneficiary, 0, new Date(), null, null);
 
 	for (let [id, node] of Object.entries(NODE_MAP)) {
-		node.addBlockToChain(genesisBlock);
+		node.modifyChain(genesisBlock);
 	}
 }
 

@@ -54,12 +54,12 @@ exports.Node = class Node {
 			if (id == this.id) continue;
 			// simulated random latency
 			setTimeout(() => {
-				node.addBlockToChain(block);
 			}, Math.random() * 1000);
+				node.modifyChain(block);
 		}
 	}
 
-	addBlockToChain(block) {
+	modifyChain(block) {
 		CONSOLE_LOG(`Candidate block ${block.displayLogIdentifier} recieved by node: ${this.displayName}`);
 		this.stopMining();
 		if (!this.verifyBlock(block)) return;
@@ -108,7 +108,7 @@ exports.Node = class Node {
 				// congrats, you mined a block
 				CONSOLE_LOG(`Block mined by ${this.displayName}`);
 				let myBlock = this.wrapBlock();
-				this.addBlockToChain(myBlock);
+				this.modifyChain(myBlock);
 				this.broadcastMinedBlock(myBlock);
 				this.candidateBlocksMined++;
 			}

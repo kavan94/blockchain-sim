@@ -34,6 +34,6 @@ exports.createAndBroadcastGenesisBlock = async () => {
 }
 
 exports.calculateAvgTimeToMine = () => {	
-	// expected # of tries for (n) leading zeros is 2^n, so
-	AVG_BLOCK_TIME = (Math.pow(2, TARGET_BINARY_LEADING_ZEROES)) / (HASH_RATE * NUM_NODES)
+	// expected # of tries for (n) leading zeros is 16^n for hex, so
+	AVG_BLOCK_TIME = (Math.pow(16, TARGET_HEX_LEADING_ZEROES)) / (HASH_RATE * NUM_NODES)
 }

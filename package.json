@@ -5,11 +5,17 @@
   "main": "index.js",
   "scripts": {
     "sim": "node index.js",
+    "debug": "node index.js --debug",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kavan Eghbalnia",
   "license": "ISC",
   "dependencies": {
+    "binstring": "^0.2.1",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.10",
+    "command-line-args": "^5.0.2",
+    "lodash": "^4.17.11",
     "object-hash": "^1.3.1",
     "rsvp": "^4.8.4",
     "terminal-kit": "^1.26.8",

@@ -1,8 +1,8 @@
 const crypto = require('crypto');
 const cla = require('command-line-args');
 
-const InitHelper = require('./app/helpers/init');
-const TerminalHelper = require('./app/helpers/terminal');
+const InitService = require('./app/services/init');
+const TerminalService = require('./app/services/terminal');
 
 global.NUM_ACCOUNTS = 10;
 global.NUM_NODES = 5;
@@ -25,21 +25,21 @@ const claOpts = cla(claOptConfig);
 if (claOpts.debug) {
 	global.CONSOLE_LOG = console.log;
 } else {
-	TerminalHelper.InitalizeLayout();
-	global.CONSOLE_LOG = TerminalHelper.verboseLog;
+	TerminalService.InitalizeLayout();
+	global.CONSOLE_LOG = TerminalService.verboseLog;
 }
 
 run = async () => {
-	InitHelper.calculateAvgTimeToMine();
+	InitService.calculateAvgTimeToMine();
 	CONSOLE_LOG(`With current settings, a block is expected to take an average of ${AVG_BLOCK_TIME} sec`);
 	CONSOLE_LOG('Setting up accounts and nodes...');
-	InitHelper.createNodes();
-	await InitHelper.createAccounts();
+	InitService.createNodes();
+	await InitService.createAccounts();
 	CONSOLE_LOG(ACCOUNT_MAP);
 	CONSOLE_LOG(`${Object.keys(ACCOUNT_MAP).length} accounts created.`);
 	CONSOLE_LOG(`${Object.keys(NODE_MAP).length} nodes created.`);
 	CONSOLE_LOG('Creating genesis block...');
-	InitHelper.createAndBroadcastGenesisBlock();
+	InitService.createAndBroadcastGenesisBlock();
 };
 
 run().catch((error) => {

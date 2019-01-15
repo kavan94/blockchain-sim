@@ -30,7 +30,7 @@ exports.Node = class Node {
 			setTimeout(() => {
 				// send this tx to each of the other nodes to verify
 				node.verifyTransaction(transaction.transaction, transaction.signature);
-			}, Math.random() * 1000);
+			}, Math.random() * 1000 * LATENCY);
 		}
 
 		this.verifyTransaction(transaction.transaction, transaction.signature);
@@ -54,8 +54,8 @@ exports.Node = class Node {
 			if (id == this.id) continue;
 			// simulated random latency
 			setTimeout(() => {
-			}, Math.random() * 1000);
 				node.modifyChain(block);
+			}, Math.random() * 1000 * LATENCY);
 		}
 	}
 

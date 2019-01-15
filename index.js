@@ -9,6 +9,7 @@ global.NUM_NODES = 5;
 global.AVG_BLOCK_TIME = null; // time in seconds for a new block to be mined
 global.HASH_RATE = 10; // number of tries each "node" gets per second
 global.TARGET_HEX_LEADING_ZEROES = 2; // number of leading zeroes required in hex
+global.LATENCY = 1.5; // max # of seconds delay in node-to-node communication
 
 // index accounts by address (in this case, as noted in account.js, just the public key)
 global.ACCOUNT_MAP = {};

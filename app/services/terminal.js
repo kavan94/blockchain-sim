@@ -98,7 +98,8 @@ var updateStatusBlock = () => {
     Object.values(NODE_MAP).map((node) => {
         if (node.id == selectedNode.id) return;
         if (objectHash(node.chain) == objectHash(selectedNode.chain)) consensusCount++;
-        if (Object.values(node.chain).some((block) => {
+        // no need to check for a fork if one is already found at a previous node
+        if (fork || Object.values(node.chain).some((block) => {
             return selectedNode.chain[block.number] && (block.headerHash != selectedNode.chain[block.number].headerHash)
         })) {
             fork = true;

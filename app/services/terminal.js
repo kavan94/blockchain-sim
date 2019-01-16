@@ -106,7 +106,7 @@ var updateStatusBlock = () => {
     });
 
     statusBox.setData([{
-        percent: Math.round(consensusCount / (Object.keys(NODE_MAP).length - 1) * 1000) / 10,
+        percent: Math.round(consensusCount / (NUM_NODES - 1) * 1000) / 10,
         label: fork ? 'FORK' : 'CONSENSUS',
         color: fork ? 'red' : 'green' 
     }]);

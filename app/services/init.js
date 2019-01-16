@@ -2,7 +2,6 @@
 
 const account = require('../models/account');
 const block = require('../models/block');
-const transaction = require('../models/transaction');
 const simulatedNode = require('../models/simulated-node');
 
 exports.createAccounts = async () => {

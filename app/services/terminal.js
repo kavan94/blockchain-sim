@@ -11,7 +11,7 @@ exports.InitalizeLayout = () => {
     // set up screen
     let grid = new contrib.grid({ rows: 4, cols: 5, screen });
     // rolling log
-    log = grid.set(0, 0, 2, 3, contrib.log, { label: 'Verbose Log', fg: "green" });
+    log = grid.set(0, 0, 3, 3, contrib.log, { label: 'Verbose Log', fg: "green" });
 
     // table for selectable nodes - which to follow
     nodesTable = grid.set(0, 3, 1, 2, contrib.table, {

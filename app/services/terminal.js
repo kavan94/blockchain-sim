@@ -5,7 +5,7 @@ const _ = require('lodash');
 const util = require('util');
 
 let screen = blessed.screen();
-let log, nodesTable, chainTable, selectedNode;
+let log, nodesTable, chainTable, selectedNode, statusBox;
 
 exports.InitalizeLayout = () => {
     // set up screen
@@ -28,12 +28,23 @@ exports.InitalizeLayout = () => {
     nodesTable.focus();
 
     // table to show current chain data for selected node
-    chainTable = grid.set(1, 3, 1, 2, contrib.table, {
+    chainTable = grid.set(1, 3, 1, 1, contrib.table, {
         label: 'Current Chain',
         columnWidth: [10, 20],
         columnSpacing: 5
     })
     chainTable.setData({ headers: ['Block', 'Hash'], data: []});
+
+    statusBox = grid.set(1, 4, 1, 1, contrib.donut, {
+        label: 'Status',
+        radius: 8,
+        arcWidth: 3,
+        remainColor: 'black',
+        yPadding: 0,
+        data: [
+            { percent: 100, label: "CONSENSUS", color: "green" }
+        ]
+    });
 
     // make sure we can still escape
     screen.key(['escape', 'q', 'C-c'], () => {
@@ -44,8 +55,10 @@ exports.InitalizeLayout = () => {
 
     // set up automatic updating
     setInterval(() => {
+        checkNodeIsSet();
         updateNodesTableData();
         updateCurrentChainTable();
+        updateStatusBlock();
         screen.render();
     }, 250);
 }
@@ -56,7 +69,13 @@ exports.verboseLog = (message) => {
     else log.log("** suppressed log message ** ('npm run debug' to show all messages)");
 }
 
- var updateNodesTableData = () => {
+var checkNodeIsSet = () => {
+    if (!selectedNode && typeof NODE_MAP !== 'undefined') {
+        selectedNode = NODE_MAP[Object.keys(NODE_MAP)[0]];
+    }
+}
+
+var updateNodesTableData = () => {
     let data = [];
     for (const [id, node] of Object.entries(NODE_MAP)) {
         data.push([node.displayName, node.candidateBlocksMined, objectHash(node.chain).substring(0,5).concat('...')]);
@@ -65,15 +84,32 @@ exports.verboseLog = (message) => {
 }
 
 var updateCurrentChainTable = () => {
-    if (!selectedNode && typeof NODE_MAP !== 'undefined') {
-        selectedNode = NODE_MAP[Object.keys(NODE_MAP)[0]];
-    }
     let data = [];
     for (const [num, block] of Object.entries(selectedNode.chain)) {
-        data.unshift([num, block.headerHash]);
+        data.unshift([num, block.headerHash.substring(0,10).concat('...')]);
         if (data.length > 5) data.pop();
     }
     chainTable.setData({ headers: ['Block', 'Hash'], data });
+}
+
+var updateStatusBlock = () => {
+    let consensusCount = 0;
+    let fork = false;
+    Object.values(NODE_MAP).map((node) => {
+        if (node.id == selectedNode.id) return;
+        if (objectHash(node.chain) == objectHash(selectedNode.chain)) consensusCount++;
+        if (Object.values(node.chain).some((block) => {
+            return selectedNode.chain[block.number] && (block.headerHash != selectedNode.chain[block.number].headerHash)
+        })) {
+            fork = true;
+        }
+    });
+
+    statusBox.setData([{
+        percent: Math.round(consensusCount / (Object.keys(NODE_MAP).length - 1) * 1000) / 10,
+        label: fork ? 'FORK' : 'CONSENSUS',
+        color: fork ? 'red' : 'green' 
+    }]);
 }
 
 var setSelectedNode = (index) => {

@@ -1,5 +1,5 @@
-crypto = require('crypto')
-objectHash = require('object-hash')
+const crypto = require('crypto')
+const objectHash = require('object-hash')
 
 exports.Block = class Block {
 	// there's no reason to use a DAG in this ultra-simplified simulation, because

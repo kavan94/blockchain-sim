@@ -63,15 +63,6 @@ exports.Account = class Account {
 		})
 	}
 
-	getPublicData() {
-		// for other accounts to get this account's public data
-		return {
-			balance: this.balance,
-			nonce: this.nonce,
-			publicKey: this.publicKey
-		}
-	}
-
 	broadcastTransaction(transaction) {
 		NODE_MAP[this.connectedNodeId].addIncomingTransaction(transaction);
 	}

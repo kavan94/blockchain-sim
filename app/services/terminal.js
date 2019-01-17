@@ -5,7 +5,7 @@ const _ = require('lodash');
 const util = require('util');
 
 let screen = blessed.screen();
-let log, nodesTable, chainTable, selectedNode, statusBox, balanceChart;
+let log, nodesTable, chainTable, selectedNode, statusBox, balanceChart, txTable;
 
 exports.InitalizeLayout = () => {
     // set up screen
@@ -53,6 +53,16 @@ exports.InitalizeLayout = () => {
         maxHeight: 50,
         height: "50%"
     });
+
+    txTable = grid.set(2, 3, 1, 2, contrib.table, {
+        label: 'Tx (According to selected node - only looks 1 block backwards)',
+        columnWidth: [15, 15, 10],
+        columnSpacing: 5,
+        interactive: true,
+        keys: true 
+    });
+    txTable.setData({ headers: ['From', 'To', 'Status'], data: [] });
+
     screen.append(balanceChart);
     balanceChart.setData({
         titles: [],
@@ -73,6 +83,7 @@ exports.InitalizeLayout = () => {
         updateCurrentChainTable();
         updateStatusBlock();
         updateBalanceChart();
+        updateTxTable();
         screen.render();
     }, 250);
 }
@@ -135,6 +146,26 @@ var updateBalanceChart = () => {
         data.data.push(account.balance);
     }
     balanceChart.setData(data);
+}
+
+var updateTxTable = () => {
+    let data = Object.values(selectedNode.unminedTxMap)
+        .sort((tx, tx2) => { return tx2.timestamp - tx.timestamp }).map((tx) => {
+            return [ ACCOUNT_MAP[tx.from].displayName, ACCOUNT_MAP[tx.to].displayName, 'verified'];
+    });
+
+    // we'll look at the latest block on the chain for mined tx to show in this table - it's tiny anyways
+    latestBlockNum = Object.keys(selectedNode.chain).length - 1;
+    if (selectedNode.chain[latestBlockNum]) {
+        let mined = Object.values(selectedNode.chain[latestBlockNum].transactions)
+            .sort((tx, tx2) => { return tx2.timestamp - tx.timestamp }).map((tx) => {
+                return [ ACCOUNT_MAP[tx.from].displayName, ACCOUNT_MAP[tx.to].displayName, '* mined *'];
+            });
+
+        data = data.concat(mined);
+    };
+    
+    txTable.setData({ headers: ['From', 'To', 'Status'], data });
 }
 
 var setSelectedNode = (index) => {

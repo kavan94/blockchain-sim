@@ -45,7 +45,12 @@ exports.Node = class Node {
 
 		let valid = verify.verify(transaction.from, signature, 'hex');
 
-		if (valid) this.txList.push(transaction);
+		if (valid) {
+			CONSOLE_LOG(`Tx verified by ${this.displayName}`);
+			this.txList.push(transaction);
+		} else {
+			CONSOLE_LOG(`Tx rejected by ${this.displayName}`);
+		}
 	}
 
 	broadcastMinedBlock(block) {

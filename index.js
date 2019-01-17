@@ -41,6 +41,7 @@ run = async () => {
 	CONSOLE_LOG(`${Object.keys(NODE_MAP).length} nodes created.`);
 	CONSOLE_LOG('Creating genesis block...');
 	InitService.createAndBroadcastGenesisBlock();
+	InitService.startAccountTransactions();
 };
 
 run().catch((error) => {

@@ -36,3 +36,9 @@ exports.calculateAvgTimeToMine = () => {
 	// expected # of tries for (n) leading zeros is 16^n for hex, so
 	AVG_BLOCK_TIME = (Math.pow(16, TARGET_HEX_LEADING_ZEROES)) / (HASH_RATE * NUM_NODES)
 }
+
+exports.startAccountTransactions = () => {
+	for (const acct of Object.values(ACCOUNT_MAP)) {
+		acct.startTransacting();
+	}
+}

@@ -1,5 +1,6 @@
-const crypto = require('crypto')
-const objectHash = require('object-hash')
+const crypto = require('crypto');
+const objectHash = require('object-hash');
+const transaction = require('./transaction');
 
 // going to use public keys as addresses instead of hashing the key to create an address.
 // contracts don't have public keys (in the ethereum blockchain) and hence would present an issue here, but contracts aren't
@@ -73,5 +74,21 @@ exports.Account = class Account {
 
 	broadcastTransaction(transaction) {
 		NODE_MAP[this.connectedNodeId].addIncomingTransaction(transaction);
+	}
+
+	createRandomTransaction() {
+		if (this.balance == 0) return;
+		const recipient = Object.keys(ACCOUNT_MAP)[Math.floor(Math.random() * NUM_ACCOUNTS)];
+		let tx = new transaction.Transaction(this.publicKey, recipient, Math.floor(Math.random() * (this.balance + 1)));
+		return this.signTransaction(tx);
+	}
+
+	startTransacting() {
+		// avg 5 sec between transactions
+		setTimeout(() => {
+			let tx = this.createRandomTransaction();
+			this.broadcastTransaction(tx);
+			this.startTransacting();
+		}, Math.random() * 10000);
 	}
 }

@@ -77,15 +77,25 @@ exports.Account = class Account {
 	}
 
 	createRandomTransaction() {
-		if (this.balance == 0) return;
 		const recipient = Object.keys(ACCOUNT_MAP)[Math.floor(Math.random() * NUM_ACCOUNTS)];
-		let tx = new transaction.Transaction(this.publicKey, recipient, Math.floor(Math.random() * (this.balance + 1)));
+		const value = Math.floor(Math.random() * (this.balance + 1));
+		let tx = new transaction.Transaction(this.publicKey, recipient, value, this.nonce);
+		this.nonce++;
+		// obviously this is not how transactions actually work - this should be simulated in a more accurate fashion
+
+		this.balance -= value;
+		ACCOUNT_MAP[recipient].balance += value;
+
 		return this.signTransaction(tx);
 	}
 
 	startTransacting() {
 		// avg 10 sec between transactions
 		setTimeout(() => {
+			if (this.balance == 0) {
+				this.startTransacting();
+				return;
+			}
 			let tx = this.createRandomTransaction();
 			this.broadcastTransaction(tx);
 			this.startTransacting();

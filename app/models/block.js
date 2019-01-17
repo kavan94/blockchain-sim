@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const objectHash = require('object-hash')
 
-exports.Block = class Block {
+module.exports = class Block {
 	// there's no reason to use a DAG in this ultra-simplified simulation, because
 	// - no ASIC resistance desired
 	// - no "light" clients/nodes

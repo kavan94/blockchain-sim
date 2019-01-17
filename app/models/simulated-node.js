@@ -2,9 +2,9 @@ const crypto = require('crypto');
 const objectHash = require('object-hash');
 const uuid = require('uuid/v4');
 
-const block = require('./block');
+const Block = require('./block');
 
-exports.Node = class Node {
+module.exports = class Node {
 	constructor(displayName) {
 		this.displayName = displayName;
 		this.id = uuid();
@@ -192,7 +192,7 @@ exports.Node = class Node {
 
 	wrapBlock () {
 		const latestBlockNum = Math.max(...Object.keys(this.chain).map((key) => { return parseInt(key)}));
-		return new block.Block(
+		return new Block(
 			Object.assign({}, this.unminedTxMap),
 			this.id,
 			latestBlockNum + 1,

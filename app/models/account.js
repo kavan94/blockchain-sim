@@ -1,11 +1,11 @@
 const crypto = require('crypto');
 const objectHash = require('object-hash');
-const transaction = require('./transaction');
+const Transaction = require('./transaction');
 
 // going to use public keys as addresses instead of hashing the key to create an address.
 // contracts don't have public keys (in the ethereum blockchain) and hence would present an issue here, but contracts aren't
 // involved in this simulation 
-exports.Account = class Account {
+module.exports = class Account {
 	constructor(displayName) {
 		// display name for purposes of logging and displaying transactions in console
 		this.displayName = displayName;
@@ -70,7 +70,7 @@ exports.Account = class Account {
 	createRandomTransaction() {
 		const recipient = Object.keys(ACCOUNT_MAP)[Math.floor(Math.random() * NUM_ACCOUNTS)];
 		const value = Math.floor(Math.random() * (this.balance + 1));
-		let tx = new transaction.Transaction(this.publicKey, recipient, value, this.nonce);
+		let tx = new Transaction(this.publicKey, recipient, value, this.nonce);
 		this.nonce++;
 		// obviously this is not how transactions actually work - this should be simulated in a more accurate fashion
 

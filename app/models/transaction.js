@@ -1,4 +1,4 @@
-exports.Transaction = class Transaction {
+module.exports = class Transaction {
 
 	constructor(from, to, value, nonce) {
                 this.from = from;

@@ -185,7 +185,7 @@ exports.Node = class Node {
 	wrapBlock () {
 		const latestBlockNum = Math.max(...Object.keys(this.chain).map((key) => { return parseInt(key)}));
 		return new block.Block(
-			this.txList,
+			this.txList.slice(),
 			this.id,
 			latestBlockNum + 1,
 			new Date(),

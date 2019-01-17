@@ -5,7 +5,7 @@ const _ = require('lodash');
 const util = require('util');
 
 let screen = blessed.screen();
-let log, nodesTable, chainTable, selectedNode, statusBox;
+let log, nodesTable, chainTable, selectedNode, statusBox, balanceChart;
 
 exports.InitalizeLayout = () => {
     // set up screen
@@ -46,6 +46,19 @@ exports.InitalizeLayout = () => {
         ]
     });
 
+    balanceChart = grid.set(3, 0, 1, 5, contrib.bar, {
+        label: 'Address / Account Balances',
+        barWidth: 11,
+        barSpacing: 17,
+        maxHeight: 50,
+        height: "50%"
+    });
+    screen.append(balanceChart);
+    balanceChart.setData({
+        titles: [],
+        data: []
+    });
+
     // make sure we can still escape
     screen.key(['escape', 'q', 'C-c'], () => {
         return process.exit(0);
@@ -59,6 +72,7 @@ exports.InitalizeLayout = () => {
         updateNodesTableData();
         updateCurrentChainTable();
         updateStatusBlock();
+        updateBalanceChart();
         screen.render();
     }, 250);
 }
@@ -111,6 +125,16 @@ var updateStatusBlock = () => {
         label: fork ? 'FORK' : 'CONSENSUS',
         color: fork ? 'red' : 'green' 
     }]);
+}
+
+var updateBalanceChart = () => {
+
+    let data = { titles: [], data: [] };
+    for (const account of Object.values(ACCOUNT_MAP)) {
+        data.titles.push(account.displayName);
+        data.data.push(account.balance);
+    }
+    balanceChart.setData(data);
 }
 
 var setSelectedNode = (index) => {

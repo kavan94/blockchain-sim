@@ -10,7 +10,7 @@ exports.Account = class Account {
 		this.displayName = displayName;
 
 		this.nonce = 0;
-		this.balance = 0;
+		this.balance = 50;
 		this.contractFn = null;
 		this.storage = {};
 		this.connectedNodeId = Object.keys(NODE_MAP)[Math.floor(Math.random() * NUM_NODES)];

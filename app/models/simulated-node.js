@@ -24,7 +24,7 @@ exports.Node = class Node {
 		// takes incoming transaction and broadcasts it to other nodes
 
 		for (let [id, node] of Object.entries(NODE_MAP)) {
-			if (id = this.id) continue;
+			if (id == this.id) continue;
 			//simulated random latency
 			setTimeout(() => {
 				// send this tx to each of the other nodes to verify

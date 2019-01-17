@@ -46,10 +46,10 @@ exports.Node = class Node {
 		let valid = verify.verify(transaction.from, signature, 'hex');
 
 		if (valid) {
-			CONSOLE_LOG(`Tx verified by ${this.displayName}`);
+			CONSOLE_LOG(`Tx ${objectHash(transaction).substring(0,3).concat('...')} verified by ${this.displayName}`);
 			this.txList.push(transaction);
 		} else {
-			CONSOLE_LOG(`Tx rejected by ${this.displayName}`);
+			CONSOLE_LOG(`Tx ${objectHash(transaction).substring(0,3).concat('...')} rejected by ${this.displayName}`);
 		}
 	}
 

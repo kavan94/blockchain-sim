@@ -11,7 +11,7 @@ exports.Node = class Node {
 		this.chain = {};
 		this.candidateBlocksMined = 0;
 
-		this.txList = [];
+		this.unminedTxMap = {};
 		this.currentMiningState = {
 			hash: null,
 			nonce: null
@@ -47,7 +47,7 @@ exports.Node = class Node {
 
 		if (valid) {
 			CONSOLE_LOG(`Tx ${objectHash(transaction).substring(0,3).concat('...')} verified by ${this.displayName}`);
-			this.txList.push(transaction);
+			this.unminedTxMap[objectHash(transaction)] = (transaction);
 		} else {
 			CONSOLE_LOG(`Tx ${objectHash(transaction).substring(0,3).concat('...')} rejected by ${this.displayName}`);
 		}
@@ -73,6 +73,14 @@ exports.Node = class Node {
 	appendBlock(block) {
 		// for verified blocks
 		CONSOLE_LOG(`Block ${block.displayLogIdentifier} verified by node: ${this.displayName}`);
+
+		// each tx that is in this block needs to be removed from our list of pending tx to mine
+		for (const [hash, tx] of Object.entries(block.transactions)) {
+			if (this.unminedTxMap[hash]) {
+				delete this.unminedTxMap[hash];
+			}
+		}
+
 		this.chain[block.number] = block;
 		this.currentMiningState.hash = objectHash(block.header);
 	}
@@ -185,7 +193,7 @@ exports.Node = class Node {
 	wrapBlock () {
 		const latestBlockNum = Math.max(...Object.keys(this.chain).map((key) => { return parseInt(key)}));
 		return new block.Block(
-			this.txList.slice(),
+			Object.assign({}, this.unminedTxMap),
 			this.id,
 			latestBlockNum + 1,
 			new Date(),

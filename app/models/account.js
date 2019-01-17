@@ -84,11 +84,11 @@ exports.Account = class Account {
 	}
 
 	startTransacting() {
-		// avg 5 sec between transactions
+		// avg 10 sec between transactions
 		setTimeout(() => {
 			let tx = this.createRandomTransaction();
 			this.broadcastTransaction(tx);
 			this.startTransacting();
-		}, Math.random() * 10000);
+		}, Math.random() * 20000);
 	}
 }

@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const objectHash = require('object-hash');
 const uuid = require('uuid/v4');
-const binstring = require('binstring');
 
 const block = require('./block');
 

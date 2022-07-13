@@ -35,6 +35,11 @@ npm install
 npm run sim
 ```
 
+To stop running the sim:
+```
+ESC
+```
+
 Some log messages are suppressed as the `blessed-contrib` rolling log doesn't like displaying objects (this is why `CONSOLE_LOG` global is used throughout the project - it maps to either `console.log` or `verboseLog` depending on mode).
 To see these messages, run the project in debug mode:
 

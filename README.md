@@ -4,7 +4,7 @@ A rough simulation of a network of nodes and accounts.
 ## Overview
 As configured, spins up 5 "nodes" which start mining at a rate of 10 attempts / second. A block is valid when it's hash begins with `00` in hex format. This, of course, requires an average of 16^2 tries, and so with 5 nodes making 10 attempts per second, will result in a block approximately every 5 seconds.
 
-The following are easily configurable in `index.js` via global variables, but this will be moved to a `.json` file and configurable via command line arguments shortly.
+The following are configurable in `index.js` via global variables:
 * Number of accounts / addresses
 * Number of nodes
 * Hash rate / tries per second
@@ -23,8 +23,6 @@ There is quite a bit left out. Notably:
    * This is a priority to fix
 * No rewards for mining blocks
 
-Solving these shortcomings, and refactoring to TypeScript (this JS is somewhat messy) are the next steps for this project.
-
 ## Usage
 
 This project uses `blessed-contrib` to display a terminal window dashboard. You will want to use a terminal theme which has a black (or very dark) background, and expand your terminal window.
@@ -35,10 +33,7 @@ npm install
 npm run sim
 ```
 
-To stop running the sim:
-```
-ESC
-```
+To stop running the sim: hit `Esc` or `Ctrl+C`
 
 Some log messages are suppressed as the `blessed-contrib` rolling log doesn't like displaying objects (this is why `CONSOLE_LOG` global is used throughout the project - it maps to either `console.log` or `verboseLog` depending on mode).
 To see these messages, run the project in debug mode:

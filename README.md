@@ -14,7 +14,7 @@ The following are configurable in `index.js` via global variables:
 This simulation is very lightweight and implements the following:
 * Transaction singature verification (RSA keypair)
 * Block verification via confirmation of POW and checking for valid parents / chain sequence
-* Consensus by longest valid chain (difficulty doens't change)
+* Consensus by longest valid chain (difficulty doesn't change)
   * This means forks will be resolved by the side of the fork which mines the next block
   
 There is quite a bit left out. Notably:
